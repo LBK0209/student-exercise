@@ -1,5 +1,6 @@
 # Student exercise
 
+
 ## Exercises
 
 1. [Walking skeleton](./exercises/exercise1.md)
