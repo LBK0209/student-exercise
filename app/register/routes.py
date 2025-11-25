@@ -89,7 +89,7 @@ def create() -> str | Response:
 
         # flash() stores a one-time message in the session
         # It will be displayed on the next page load using the template
-        flash("Successfully created register", "success")
+        flash("Successfully cd register", "success")
 
         # Redirect to follow the Post/Redirect/Get (PRG) pattern
         # This prevents duplicate form submissions if the user refreshes
