@@ -198,7 +198,7 @@ class Driver:
 #def the functions we made in DLS file #def nav to entry!! 
 
         def _navigate_to_entry(self):
-        self._find_and_click(By.LINK_TEXT, "Entry")
+        self._find_and_click(By.LINK_TEXT, "Entries")
 
         register_heading = self.browser.find_element(By.TAG_NAME, "h1")
         assert entry_heading.text == "Entry"

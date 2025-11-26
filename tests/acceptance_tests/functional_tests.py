@@ -92,7 +92,7 @@ class FunctionalTests(TestCase):
         self.dsl.ensure_existing_entry()
         self.dsl.confirm_can_view_entry
 
-    def test_can_edit_entry_name_required(self:)
+    def test_can_edit_entry_name_required(self):
         self.dsl.ensure_existing_entry()
         self.dsl.update_existing_entry(name="") #--new
         self.dsl.confirm_name_required_validation_error()
