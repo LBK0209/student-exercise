@@ -230,3 +230,26 @@ class Driver:
 
             new_entry = self.browser.find_element(By.XPATH, f"//*[contains(text(), '{new_name}')]")
             assert new_entry is not None, "Entry with new name not found"
+################################################
+
+    def delete_existing_entry(self, name):
+            self._navigate_to_entry()
+            self._view_entry(name)
+
+            self._find_and_click(By.LINK_TEXT, "Delete entry")
+
+    def confirm_entry_deletion(self, alias):
+        confirm_checkbox = self.browser.find_element(By.NAME, "confirm")
+        confirm_checkbox.click()
+
+        self._find_and_click(By.NAME, "submit")
+
+    def confirm_entry_deleted(self, name):
+        deleted_message = self.browser.find_element(By.XPATH, "//*[contains(text(),'Successfully deleted entry')]")
+        assert deleted_message is not None, "Deleted message not found"
+
+    def cancel_entry_deletion(self, name):
+        self._find_and_click(By.LINK_TEXT, "Cancel")
+
+    def confirm_entry_exists(self, name):
+        self._navigate_to_entry()
