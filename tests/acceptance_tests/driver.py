@@ -194,16 +194,14 @@ class Driver:
         self._view_register(register)
         self._view_entry(entry_name)
 
-
-#def the functions we made in DLS file #def nav to entry!! 
+        # def the functions we made in DLS file #def nav to entry!!
 
         def _navigate_to_entry(self):
-        self._find_and_click(By.LINK_TEXT, "Entries")
+            self._find_and_click(By.LINK_TEXT, "Entries")
 
-        register_heading = self.browser.find_element(By.TAG_NAME, "h1")
-        assert entry_heading.text == "Entry"
+            entry_heading = self.browser.find_element(By.TAG_NAME, "h1")
+            assert entry_heading.text == "Entry"
 
-                   
         def update_existing_entry(self, name, new_name):
             self._navigate_to_entry()
             self._view_entry(name)
@@ -218,18 +216,17 @@ class Driver:
 
             self._find_and_click(By.NAME, "submit")
 
-
         def confirm_entry_updated(self, old_name, new_name):
-        updated_message = self.browser.find_element(By.XPATH, "//*[contains(text(),'Successfully updated entry')]")
-        assert updated_message is not None, "Updated message not found"
+            updated_message = self.browser.find_element(By.XPATH, "//*[contains(text(),'Successfully updated entry')]")
+            assert updated_message is not None, "Updated message not found"
 
-        self._navigate_to_entry()
+            self._navigate_to_entry()
 
-        try:
-            self.browser.find_element(By.XPATH, f"//*[contains(text(), '{old_name}')]")
-            raise AssertionError("Entry with old name still exists")
-        except NoSuchElementException:
-            pass
+            try:
+                self.browser.find_element(By.XPATH, f"//*[contains(text(), '{old_name}')]")
+                raise AssertionError("Entry with old name still exists")
+            except NoSuchElementException:
+                pass
 
-        new_entry = self.browser.find_element(By.XPATH, f"//*[contains(text(), '{new_name}')]")
-        assert new_entry is not None, "Entry with new name not found"
+            new_entry = self.browser.find_element(By.XPATH, f"//*[contains(text(), '{new_name}')]")
+            assert new_entry is not None, "Entry with new name not found"
