@@ -61,6 +61,7 @@ def view(register_id: UUID, entry_id: UUID) -> str:
     # Render the detail page for this register
     return render_template("entry/view.html", entry=entry)
 
+
 @bp.route("/<uuid:entry_id>/edit", methods=["GET", "POST"])
 def edit(register_id: UUID, entry_id: UUID) -> str | Response:
     # Load the register or show 404 if it doesn't exist
