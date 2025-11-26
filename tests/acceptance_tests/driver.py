@@ -252,5 +252,4 @@ class Driver:
     def cancel_entry_deletion(self, name):
         self._find_and_click(By.LINK_TEXT, "Cancel")
 
-    def confirm_entry_exists(self, name):
-        self._navigate_to_entry()
+
