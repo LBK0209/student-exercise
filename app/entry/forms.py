@@ -85,9 +85,8 @@ class EntryForm(FlaskForm):
             raise ValidationError("Name already in use")
 
 
-
 class EntryDeleteForm(FlaskForm):
-    
+
     # A checkbox that the user must actively tick to continue.
     # Using InputRequired ensures the user can't accidentally skip it.
     confirm = BooleanField(
