@@ -15,34 +15,71 @@ Notes for Students:
   for templates, including GOV.UK frontend templates.
 """
 
-from typing import Type
+from typing import (
+    Type,
+)
 
-from flask import Flask
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from flask import (
+    Flask,
+)
+from flask_limiter import (
+    Limiter,
+)
+from flask_limiter.util import (
+    get_remote_address,
+)
+from flask_migrate import (
+    Migrate,
+)
+from flask_sqlalchemy import (
+    SQLAlchemy,
+)
 from flask_wtf.csrf import CSRFProtect  # type: ignore[import]
 from govuk_frontend_wtf.main import WTFormsHelpers  # type: ignore[import]
-from jinja2 import ChoiceLoader, PackageLoader, PrefixLoader
-from werkzeug.middleware.proxy_fix import ProxyFix
+from jinja2 import (
+    ChoiceLoader,
+    PackageLoader,
+    PrefixLoader,
+)
+from werkzeug.middleware.proxy_fix import (
+    ProxyFix,
+)
 
-from config import Config
+from config import (
+    Config,
+)
 
 # --- FLASK EXTENSIONS ---
 #
 # These are initialized once here so they can be imported elsewhere in the app.
 # They will be "attached" to the app later using `init_app`.
-csrf: CSRFProtect = CSRFProtect()
-db: SQLAlchemy = SQLAlchemy()
-limiter: Limiter = Limiter(
-    get_remote_address,
-    default_limits=["50 per second", "500 per minute"],  # Rate limits for requests
+csrf: CSRFProtect = (
+    CSRFProtect()
 )
-migrate: Migrate = Migrate()
+db: SQLAlchemy = (
+    SQLAlchemy()
+)
+limiter: (
+    Limiter
+) = Limiter(
+    get_remote_address,
+    default_limits=[
+        "50 per second",
+        "500 per minute",
+    ],  # Rate limits for requests
+)
+migrate: (
+    Migrate
+) = (
+    Migrate()
+)
 
 
-def create_app(config_class: Type[Config] = Config) -> Flask:
+def create_app(
+    config_class: Type[
+        Config
+    ] = Config,
+) -> Flask:
     """
     Application factory to create and configure the Flask app.
 
@@ -54,24 +91,38 @@ def create_app(config_class: Type[Config] = Config) -> Flask:
     """
     # Create the Flask application instance
     app: Flask = Flask(__name__)  # type: ignore[assignment]
-    app.config.from_object(config_class)
+    app.config.from_object(
+        config_class
+    )
 
     # --- JINJA2 TEMPLATE CONFIG ---
     # Add a global variable to the template environment
-    app.jinja_env.globals["govukRebrand"] = True
+    app.jinja_env.globals[
+        "govukRebrand"
+    ] = True
     # Strip and trim blocks to remove extra whitespace in rendered templates
-    app.jinja_env.lstrip_blocks = True
-    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = (
+        True
+    )
+    app.jinja_env.trim_blocks = (
+        True
+    )
 
     # Configure template loaders to allow multiple template sources
     app.jinja_loader = ChoiceLoader(
         [
-            PackageLoader("app"),  # Load templates from the 'app' package
+            PackageLoader(
+                "app"
+            ),  # Load templates from the 'app' package
             PrefixLoader(
                 {
                     # Load templates from GOV.UK frontend packages
-                    "govuk_frontend_jinja": PackageLoader("govuk_frontend_jinja"),
-                    "govuk_frontend_wtf": PackageLoader("govuk_frontend_wtf"),
+                    "govuk_frontend_jinja": PackageLoader(
+                        "govuk_frontend_jinja"
+                    ),
+                    "govuk_frontend_wtf": PackageLoader(
+                        "govuk_frontend_wtf"
+                    ),
                 }
             ),
         ]
@@ -83,25 +134,48 @@ def create_app(config_class: Type[Config] = Config) -> Flask:
 
     # --- INITIALIZE EXTENSIONS ---
     # Attach extensions to this Flask app
-    csrf.init_app(app)  # CSRF protection for forms
-    db.init_app(app)  # SQLAlchemy database connection
-    limiter.init_app(app)  # Rate limiting for requests
-    migrate.init_app(app, db)  # Database migrations
-    WTFormsHelpers(app)  # Add GOV.UK WTForms helpers for forms
+    csrf.init_app(
+        app
+    )  # CSRF protection for forms
+    db.init_app(
+        app
+    )  # SQLAlchemy database connection
+    limiter.init_app(
+        app
+    )  # Rate limiting for requests
+    migrate.init_app(
+        app,
+        db,
+    )  # Database migrations
+    WTFormsHelpers(
+        app
+    )  # Add GOV.UK WTForms helpers for forms
 
     # --- REGISTER BLUEPRINTS ---
     # Blueprints group related routes and templates
-    from app.main import bp as main_bp
-    from app.register import bp as register_bp
+    from app.main import (
+        bp as main_bp,
+    )
+    from app.register import (
+        bp as register_bp,
+    )
 
     # Register the main blueprint for generic routes
-    app.register_blueprint(main_bp)
+    app.register_blueprint(
+        main_bp
+    )
     # Register the Register blueprint (including nested Entry blueprint)
-    app.register_blueprint(register_bp)
+    app.register_blueprint(
+        register_bp
+    )
 
-    return app
+    return (
+        app
+    )
 
 
 # Import models to ensure they are registered with SQLAlchemy
 # noqa disables warnings about import order or unused import
-from app import models  # noqa: E402,F401
+from app import (
+    models,
+)  # noqa: E402,F401

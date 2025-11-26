@@ -11,19 +11,32 @@ Both forms use GOV.UK Frontend-styled WTForms widgets to match the
 design system used in the application.
 """
 
-from flask_wtf import FlaskForm
+from flask_wtf import (
+    FlaskForm,
+)
 from govuk_frontend_wtf.wtforms_widgets import (
     GovCheckboxInput,
     GovSubmitInput,
     GovTextInput,
 )
-from wtforms.fields import BooleanField, StringField, SubmitField
-from wtforms.validators import InputRequired, ValidationError
+from wtforms.fields import (
+    BooleanField,
+    StringField,
+    SubmitField,
+)
+from wtforms.validators import (
+    InputRequired,
+    ValidationError,
+)
 
-from app.models import Register
+from app.models import (
+    Register,
+)
 
 
-class RegisterForm(FlaskForm):
+class RegisterForm(
+    FlaskForm
+):
     """
     A form used to create or edit a Register.
 
@@ -49,13 +62,23 @@ class RegisterForm(FlaskForm):
     name = StringField(
         "Name",
         widget=GovTextInput(),
-        validators=[InputRequired(message="Enter a name")],
+        validators=[
+            InputRequired(
+                message="Enter a name"
+            )
+        ],
     )
 
     # A standard GOV.UK-styled submit button.
-    submit: SubmitField = SubmitField("Save", widget=GovSubmitInput())
+    submit: SubmitField = SubmitField(
+        "Save",
+        widget=GovSubmitInput(),
+    )
 
-    def validate_name(self, field):
+    def validate_name(
+        self,
+        field,
+    ):
         """
         Ensure that the register name is unique.
 
@@ -76,12 +99,18 @@ class RegisterForm(FlaskForm):
         - Raising a ValidationError tells WTForms that this field is invalid,
           and the error message is displayed to the user.
         """
-        existing = Register.query.filter_by(name=field.data).first()
+        existing = Register.query.filter_by(
+            name=field.data
+        ).first()
         if existing:
-            raise ValidationError("Name already in use")
+            raise ValidationError(
+                "Name already in use"
+            )
 
 
-class RegisterDeleteForm(FlaskForm):
+class RegisterDeleteForm(
+    FlaskForm
+):
     """
     A form used to confirm the deletion of a Register.
 
@@ -102,8 +131,15 @@ class RegisterDeleteForm(FlaskForm):
     confirm = BooleanField(
         "I'm sure",
         widget=GovCheckboxInput(),
-        validators=[InputRequired(message="Select if you want to delete this register")],
+        validators=[
+            InputRequired(
+                message="Select if you want to delete this register"
+            )
+        ],
     )
 
     # Submit button styled using GOV.UK design system components.
-    submit: SubmitField = SubmitField("Delete", widget=GovSubmitInput())
+    submit: SubmitField = SubmitField(
+        "Delete",
+        widget=GovSubmitInput(),
+    )

@@ -14,27 +14,47 @@ Notes for Students:
 """
 
 import uuid
-from typing import TYPE_CHECKING, List
+from typing import (
+    TYPE_CHECKING,
+    List,
+)
 
-from sqlalchemy import ForeignKey, UniqueConstraint
+from sqlalchemy import (
+    ForeignKey,
+    UniqueConstraint,
+)
 
 # PostgreSQL UUID type for database columns
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import (
+    UUID,
+)
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship,
+)
 
-from app import db
+from app import (
+    db,
+)
 
 # TYPE_CHECKING is used to avoid circular import problems when
 # using type hints in Python. It allows hints to be checked only
 # during static analysis, not at runtime.
 if TYPE_CHECKING:
-    from flask_sqlalchemy.model import Model
+    from flask_sqlalchemy.model import (
+        Model,
+    )
 else:
     # Use db.Model as the base class for our models
-    Model = db.Model
+    Model = (
+        db.Model
+    )
 
 
-class Register(Model):
+class Register(
+    Model
+):
     """
     Represents a Register record in the database.
 
@@ -61,27 +81,39 @@ class Register(Model):
     """
 
     # Primary key column using UUID
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),  # Store as UUID in PostgreSQL
+    id: Mapped[
+        uuid.UUID
+    ] = mapped_column(
+        UUID(
+            as_uuid=True
+        ),  # Store as UUID in PostgreSQL
         primary_key=True,  # Primary key
         default=uuid.uuid4,  # Auto-generate a UUID
     )
 
     # Name column for the register
-    name: Mapped[str] = mapped_column(
+    name: Mapped[
+        str
+    ] = mapped_column(
         nullable=False,  # Cannot be empty
         unique=True,  # Each register name must be unique
         index=True,  # Database index for faster search
     )
 
-    entries: Mapped[List["Entry"]] = relationship(
+    entries: Mapped[
+        List[
+            "Entry"
+        ]
+    ] = relationship(
         "Entry",
         back_populates="register",
         order_by="Entry.name",
     )
 
 
-class Entry(Model):
+class Entry(
+    Model
+):
     """
     Represents an Entry record in the database.
 
@@ -95,25 +127,49 @@ class Entry(Model):
     """
 
     # Primary key column using UUID
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),  # Store as UUID in PostgreSQL
+    id: Mapped[
+        uuid.UUID
+    ] = mapped_column(
+        UUID(
+            as_uuid=True
+        ),  # Store as UUID in PostgreSQL
         primary_key=True,  # Primary key
         default=uuid.uuid4,  # Auto-generate a UUID
     )
 
     # Name column for the entry
-    name: Mapped[str] = mapped_column(
+    name: Mapped[
+        str
+    ] = mapped_column(
         nullable=False,  # Cannot be empty
         unique=False,  # Entry names are not globally unique, but should be unique on a given register
         index=True,  # Database index for faster search
     )
 
     # Foreign keys
-    register_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("register.id", ondelete="RESTRICT"), nullable=False, index=True
+    register_id: Mapped[
+        uuid.UUID
+    ] = mapped_column(
+        ForeignKey(
+            "register.id",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+        index=True,
     )
 
     # Relationships
-    register: Mapped["Register"] = relationship("Register", back_populates="entries")
+    register: Mapped[
+        "Register"
+    ] = relationship(
+        "Register",
+        back_populates="entries",
+    )
 
-    __table_args__ = (UniqueConstraint("name", "register_id", name="_entry_name_register_uc"),)
+    __table_args__ = (
+        UniqueConstraint(
+            "name",
+            "register_id",
+            name="_entry_name_register_uc",
+        ),
+    )

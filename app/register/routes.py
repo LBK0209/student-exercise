@@ -22,15 +22,34 @@ Notes for students:
     - Flask converts it automatically into a Python `UUID` object
 """
 
-from uuid import UUID
+from uuid import (
+    UUID,
+)
 
-from flask import flash, redirect, render_template, request, url_for
-from werkzeug import Response
+from flask import (
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from werkzeug import (
+    Response,
+)
 
-from app import db
-from app.models import Register
-from app.register import bp
-from app.register.forms import RegisterDeleteForm, RegisterForm
+from app import (
+    db,
+)
+from app.models import (
+    Register,
+)
+from app.register import (
+    bp,
+)
+from app.register.forms import (
+    RegisterDeleteForm,
+    RegisterForm,
+)
 
 # --- ROUTES FOR REGISTER CRUD OPERATIONS ---
 #
@@ -40,8 +59,15 @@ from app.register.forms import RegisterDeleteForm, RegisterForm
 # Each route corresponds to one CRUD operation.
 
 
-@bp.route("/", methods=["GET"])
-def index() -> str:
+@bp.route(
+    "/",
+    methods=[
+        "GET"
+    ],
+)
+def index() -> (
+    str
+):
     """
     List all Register records.
 
@@ -55,14 +81,34 @@ def index() -> str:
     # db.select(Register) builds the SELECT query
     # .scalars() converts the results into Register objects
     # .all() loads all rows into a Python list
-    registers = db.session.execute(db.select(Register)).scalars().all()
+    registers = (
+        db.session.execute(
+            db.select(
+                Register
+            )
+        )
+        .scalars()
+        .all()
+    )
 
     # Render a Jinja template and pass the list of registers to it
-    return render_template("register/index.html", registers=registers)
+    return render_template(
+        "register/index.html",
+        registers=registers,
+    )
 
 
-@bp.route("/new", methods=["GET", "POST"])
-def create() -> str | Response:
+@bp.route(
+    "/new",
+    methods=[
+        "GET",
+        "POST",
+    ],
+)
+def create() -> (
+    str
+    | Response
+):
     """
     Create a new Register.
 
@@ -74,33 +120,58 @@ def create() -> str | Response:
     - str: Rendered form page on GET or validation failure
     - Response: Redirect to index on successful creation
     """
-    form = RegisterForm()
+    form = (
+        RegisterForm()
+    )
 
     # Flask-WTF handles form validation and CSRF protection for us.
     # We don't need to manually check request.form or HTML inputs.
-    if form.validate_on_submit():
+    if (
+        form.validate_on_submit()
+    ):
         # Create a new Register object with the submitted name
-        register = Register(name=form.name.data)
+        register = Register(
+            name=form.name.data
+        )
 
         # Stage the new record for insertion
-        db.session.add(register)
+        db.session.add(
+            register
+        )
         # Commit writes the new record to the database
         db.session.commit()
 
         # flash() stores a one-time message in the session
         # It will be displayed on the next page load using the template
-        flash("Successfully created register", "success")
+        flash(
+            "Successfully created register",
+            "success",
+        )
 
         # Redirect to follow the Post/Redirect/Get (PRG) pattern
         # This prevents duplicate form submissions if the user refreshes
-        return redirect(url_for("register.index"))
+        return redirect(
+            url_for(
+                "register.index"
+            )
+        )
 
     # Render the form for GET requests or if validation fails
-    return render_template("register/create.html", form=form)
+    return render_template(
+        "register/create.html",
+        form=form,
+    )
 
 
-@bp.route("/<uuid:register_id>", methods=["GET"])
-def view(register_id: UUID) -> str:
+@bp.route(
+    "/<uuid:register_id>",
+    methods=[
+        "GET"
+    ],
+)
+def view(
+    register_id: UUID,
+) -> str:
     """
     View a single Register by its UUID.
 
@@ -111,14 +182,31 @@ def view(register_id: UUID) -> str:
     - str: Rendered HTML page showing the register details
     """
     # Fetch the register or return a 404 page if it does not exist
-    register = db.get_or_404(Register, register_id)
+    register = db.get_or_404(
+        Register,
+        register_id,
+    )
 
     # Render the detail page for this register
-    return render_template("register/view.html", register=register)
+    return render_template(
+        "register/view.html",
+        register=register,
+    )
 
 
-@bp.route("/<uuid:register_id>/edit", methods=["GET", "POST"])
-def edit(register_id: UUID) -> str | Response:
+@bp.route(
+    "/<uuid:register_id>/edit",
+    methods=[
+        "GET",
+        "POST",
+    ],
+)
+def edit(
+    register_id: UUID,
+) -> (
+    str
+    | Response
+):
     """
     Edit an existing Register.
 
@@ -134,28 +222,64 @@ def edit(register_id: UUID) -> str | Response:
     - Response: Redirect to index on successful edit
     """
     # Load the register or show 404 if it doesn't exist
-    register: Register = db.get_or_404(Register, register_id)
-    form = RegisterForm()
+    register: Register = db.get_or_404(
+        Register,
+        register_id,
+    )
+    form = (
+        RegisterForm()
+    )
 
-    if request.method == "GET":
+    if (
+        request.method
+        == "GET"
+    ):
         # Pre-fill the form with current data so user can edit it
-        form.name.data = register.name
-    elif form.validate_on_submit():
+        form.name.data = (
+            register.name
+        )
+    elif (
+        form.validate_on_submit()
+    ):
         # Copy validated form data into the Register object
-        register.name = form.name.data
+        register.name = (
+            form.name.data
+        )
 
         # Persist changes to the database
         db.session.commit()
 
-        flash("Successfully updated register", "success")
-        return redirect(url_for("register.index"))
+        flash(
+            "Successfully updated register",
+            "success",
+        )
+        return redirect(
+            url_for(
+                "register.index"
+            )
+        )
 
     # Render the form page for GET requests or failed validation
-    return render_template("register/edit.html", register=register, form=form)
+    return render_template(
+        "register/edit.html",
+        register=register,
+        form=form,
+    )
 
 
-@bp.route("/<uuid:register_id>/delete", methods=["GET", "POST"])
-def delete(register_id: UUID) -> str | Response:
+@bp.route(
+    "/<uuid:register_id>/delete",
+    methods=[
+        "GET",
+        "POST",
+    ],
+)
+def delete(
+    register_id: UUID,
+) -> (
+    str
+    | Response
+):
     """
     Delete an existing Register.
 
@@ -171,17 +295,37 @@ def delete(register_id: UUID) -> str | Response:
     - Response: Redirect to index on successful deletion
     """
     # Load the register to delete or return 404 if not found
-    register = db.get_or_404(Register, register_id)
+    register = db.get_or_404(
+        Register,
+        register_id,
+    )
 
-    form = RegisterDeleteForm()
+    form = (
+        RegisterDeleteForm()
+    )
 
-    if form.validate_on_submit():
+    if (
+        form.validate_on_submit()
+    ):
         # Remove the register from the database
-        db.session.delete(register)
+        db.session.delete(
+            register
+        )
         db.session.commit()
 
-        flash("Successfully deleted register", "success")
-        return redirect(url_for("register.index"))
+        flash(
+            "Successfully deleted register",
+            "success",
+        )
+        return redirect(
+            url_for(
+                "register.index"
+            )
+        )
 
     # Render the confirmation page if GET request or validation fails
-    return render_template("register/delete.html", register=register, form=form)
+    return render_template(
+        "register/delete.html",
+        register=register,
+        form=form,
+    )

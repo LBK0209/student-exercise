@@ -28,7 +28,9 @@ Key Concepts for Students:
    - It is placed after the blueprint is created to prevent circular imports.
 """
 
-from flask import Blueprint
+from flask import (
+    Blueprint,
+)
 
 # Create the blueprint for Entry routes
 #
@@ -41,7 +43,11 @@ from flask import Blueprint
 #   /registers/<register_id>/entries/         -> list entries
 #   /registers/<register_id>/entries/new     -> create entry
 #   /registers/<register_id>/entries/<entry_id> -> view/edit/delete entry
-bp: Blueprint = Blueprint("entry", __name__, url_prefix="/<uuid:register_id>/entries")
+bp: Blueprint = Blueprint(
+    "entry",
+    __name__,
+    url_prefix="/<uuid:register_id>/entries",
+)
 
 # Import routes after blueprint creation
 #
@@ -49,4 +55,6 @@ bp: Blueprint = Blueprint("entry", __name__, url_prefix="/<uuid:register_id>/ent
 # access to the bp object.
 # The "# noqa" comments disable linting warnings about import order
 # (E402) or unused imports (F401).
-from app.entry import routes  # noqa: E402,F401
+from app.entry import (
+    routes,
+)  # noqa: E402,F401

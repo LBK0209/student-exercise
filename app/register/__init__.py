@@ -17,9 +17,13 @@ Other modules (such as `app.register.routes`) will use this `bp` object
 to add URL routes that belong to the "register" part of the application.
 """
 
-from flask import Blueprint
+from flask import (
+    Blueprint,
+)
 
-from app.entry import bp as entry_bp
+from app.entry import (
+    bp as entry_bp,
+)
 
 # Create a blueprint named "register".
 #
@@ -33,10 +37,16 @@ from app.entry import bp as entry_bp
 #   becomes:
 #     /registers/
 #
-bp: Blueprint = Blueprint("register", __name__, url_prefix="/registers")
+bp: Blueprint = Blueprint(
+    "register",
+    __name__,
+    url_prefix="/registers",
+)
 
 # Nest the Entry blueprint under the Register blueprint
-bp.register_blueprint(entry_bp)
+bp.register_blueprint(
+    entry_bp
+)
 
 # Import routes AFTER the blueprint is created.
 #
@@ -45,4 +55,6 @@ bp.register_blueprint(entry_bp)
 #
 # The "# noqa" comments disable certain formatting/linting warnings about
 # import order (E402) or unused imports (F401).
-from app.register import routes  # noqa: E402,F401
+from app.register import (
+    routes,
+)  # noqa: E402,F401
