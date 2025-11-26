@@ -1,10 +1,10 @@
 """
-Forms for creating and deleting Register objects.
+Forms for creating and deleting Entry objects.
 
 This module contains two Flask-WTF form classes used when working with
-Register records:
+Entry records:
 
-- RegisterForm: Used when creating or editing a Register.
+- EntryForm: Used when creating or editing an Entry.
 - RegisterDeleteForm: Used to confirm deletion of a Register.
 
 Both forms use GOV.UK Frontend-styled WTForms widgets to match the
@@ -13,10 +13,11 @@ design system used in the application.
 
 from flask_wtf import FlaskForm
 from govuk_frontend_wtf.wtforms_widgets import (
+    GovCheckboxInput,
     GovSubmitInput,
     GovTextInput,
 )
-from wtforms.fields import StringField, SubmitField
+from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import InputRequired, ValidationError
 
 from app.models import Entry
@@ -82,3 +83,18 @@ class EntryForm(FlaskForm):
         existing = Entry.query.filter_by(register_id=self.register_id, name=field.data).first()
         if existing:
             raise ValidationError("Name already in use")
+
+
+
+class EntryDeleteForm(FlaskForm):
+    
+    # A checkbox that the user must actively tick to continue.
+    # Using InputRequired ensures the user can't accidentally skip it.
+    confirm = BooleanField(
+        "I'm sure",
+        widget=GovCheckboxInput(),
+        validators=[InputRequired(message="Select if you want to delete this entry")],
+    )
+
+    # Submit button styled using GOV.UK design system components.
+    submit: SubmitField = SubmitField("Delete", widget=GovSubmitInput())
