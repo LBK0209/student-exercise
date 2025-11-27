@@ -128,92 +128,271 @@ class Dsl:
             )
         )
 
-    def update_existing_register(self,current_name=DEFAULT_REGISTER_NAME,new_name="",):
-        current_name_alias = self._encode_alias(current_name )
-        new_name_alias = self._encode_alias(new_name)
-        self.driver.update_existing_register(current_name_alias,new_name_alias,)
+    def update_existing_register(
+        self,
+        current_name=DEFAULT_REGISTER_NAME,
+        new_name="",
+    ):
+        current_name_alias = self._encode_alias(
+            current_name
+        )
+        new_name_alias = self._encode_alias(
+            new_name
+        )
+        self.driver.update_existing_register(
+            current_name_alias,
+            new_name_alias,
+        )
 
-    def confirm_register_updated(self,old_name=DEFAULT_REGISTER_NAME,new_name="",):
-        old_name_alias = self._decode_alias(old_name)
-        new_name_alias = self._decode_alias( new_name)
-        self.driver.confirm_register_updated(old_name_alias,new_name_alias,)
+    def confirm_register_updated(
+        self,
+        old_name=DEFAULT_REGISTER_NAME,
+        new_name="",
+    ):
+        old_name_alias = self._decode_alias(
+            old_name
+        )
+        new_name_alias = self._decode_alias(
+            new_name
+        )
+        self.driver.confirm_register_updated(
+            old_name_alias,
+            new_name_alias,
+        )
 
-    def delete_existing_register(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._encode_alias(name)
-        self.driver.delete_existing_register(alias)
+    def delete_existing_register(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._encode_alias(
+            name
+        )
+        self.driver.delete_existing_register(
+            alias
+        )
 
-    def confirm_deletion_requires_confirmation(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_deletion_requires_confirmation(alias)
+    def confirm_deletion_requires_confirmation(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_deletion_requires_confirmation(
+            alias
+        )
 
-    def cancel_register_deletion(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.cancel_register_deletion(alias)
+    def cancel_register_deletion(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.cancel_register_deletion(
+            alias
+        )
 
-    def confirm_register_deletion(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_register_deletion(alias)
+    def confirm_register_deletion(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_register_deletion(
+            alias
+        )
 
-    def confirm_register_deleted(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_register_deleted(alias)
+    def confirm_register_deleted(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_register_deleted(
+            alias
+        )
 
-    def confirm_register_exists(self,name=DEFAULT_REGISTER_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_register_exists(alias)
+    def confirm_register_exists(
+        self,
+        name=DEFAULT_REGISTER_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_register_exists(
+            alias
+        )
 
-    def ensure_existing_entry(self,register=DEFAULT_REGISTER_NAME,entry_name=DEFAULT_ENTRY_NAME,):
-        self.add_entry_to_register(register=register,entry_name=entry_name,)
-        self.confirm_entry_added(register=register,entry_name=entry_name,)
+    def ensure_existing_entry(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        entry_name=DEFAULT_ENTRY_NAME,
+    ):
+        self.add_entry_to_register(
+            register=register,
+            entry_name=entry_name,
+        )
+        self.confirm_entry_added(
+            register=register,
+            entry_name=entry_name,
+        )
 
-    def add_entry_to_register(self,register=DEFAULT_REGISTER_NAME,entry_name=DEFAULT_ENTRY_NAME,):
-        self.driver.add_entry_to_register(register=self._encode_alias(register),entry_name=self._encode_alias(entry_name),)
+    def add_entry_to_register(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        entry_name=DEFAULT_ENTRY_NAME,
+    ):
+        self.driver.add_entry_to_register(
+            register=self._encode_alias(
+                register
+            ),
+            entry_name=self._encode_alias(
+                entry_name
+            ),
+        )
 
-    def confirm_entry_added(self,register=DEFAULT_REGISTER_NAME,entry_name=DEFAULT_ENTRY_NAME,):
-        self.driver.confirm_entry_added(register=self._decode_alias(register),entry_name=self._decode_alias(entry_name),)
+    def confirm_entry_added(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        entry_name=DEFAULT_ENTRY_NAME,
+    ):
+        self.driver.confirm_entry_added(
+            register=self._decode_alias(
+                register
+            ),
+            entry_name=self._decode_alias(
+                entry_name
+            ),
+        )
 
-    def confirm_can_view_entry(self,register=DEFAULT_REGISTER_NAME,entry_name=DEFAULT_ENTRY_NAME,):
-        self.driver.confirm_can_view_entry(register=self._encode_alias(register),entry_name=self._encode_alias(entry_name),)
+    def confirm_can_view_entry(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        entry_name=DEFAULT_ENTRY_NAME,
+    ):
+        self.driver.confirm_can_view_entry(
+            register=self._encode_alias(
+                register
+            ),
+            entry_name=self._encode_alias(
+                entry_name
+            ),
+        )
 
-    def update_existing_entry(self,register=DEFAULT_REGISTER_NAME,current_name=DEFAULT_ENTRY_NAME,new_name="",):
-        register_alias = self._encode_alias(register)
-        current_name_alias = self._encode_alias(current_name)
-        new_name_alias = self._encode_alias(new_name)
-        self.driver.update_existing_entry(register=register_alias,current_name=current_name_alias,new_name=new_name_alias,)  # new newnewnewnewn
+    def update_existing_entry(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        current_name=DEFAULT_ENTRY_NAME,
+        new_name="",
+    ):
+        register_alias = self._encode_alias(
+            register
+        )
+        current_name_alias = self._encode_alias(
+            current_name
+        )
+        new_name_alias = self._encode_alias(
+            new_name
+        )
+        self.driver.update_existing_entry(
+            register=register_alias,
+            current_name=current_name_alias,
+            new_name=new_name_alias,
+        )  # new newnewnewnewn
 
-    def confirm_entry_updated(self,register=DEFAULT_REGISTER_NAME,old_name=DEFAULT_ENTRY_NAME,new_name="",):
-        register_alias = self._decode_alias(register)
-        old_name_alias = self._decode_alias(old_name)
-        new_name_alias = self._decode_alias(new_name)
-        self.driver.confirm_entry_updated(register_alias,old_name_alias,new_name_alias,)  # newnewnewnew
+    def confirm_entry_updated(
+        self,
+        register=DEFAULT_REGISTER_NAME,
+        old_name=DEFAULT_ENTRY_NAME,
+        new_name="",
+    ):
+        register_alias = self._decode_alias(
+            register
+        )
+        old_name_alias = self._decode_alias(
+            old_name
+        )
+        new_name_alias = self._decode_alias(
+            new_name
+        )
+        self.driver.confirm_entry_updated(
+            register_alias,
+            old_name_alias,
+            new_name_alias,
+        )  # newnewnewnew
 
     #######################################
 
-    def delete_existing_entry(self,register_name=DEFAULT_REGISTER_NAME,name=DEFAULT_ENTRY_NAME,):
-        alias = self._encode_alias(name)
-        alias_register = self._encode_alias(register_name)
-        self.driver.delete_existing_entry(alias,alias_register,)  # new
+    def delete_existing_entry(
+        self,
+        register_name=DEFAULT_REGISTER_NAME,
+        name=DEFAULT_ENTRY_NAME,
+    ):
+        alias = self._encode_alias(
+            name
+        )
+        alias_register = self._encode_alias(
+            register_name
+        )
+        self.driver.delete_existing_entry(
+            alias,
+            alias_register,
+        )  # new
 
-    def confirm_entry_deletion(self,register_name=DEFAULT_REGISTER_NAME,name=DEFAULT_ENTRY_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_entry_deletion(alias)  # new
+    def confirm_entry_deletion(
+        self,
+        register_name=DEFAULT_REGISTER_NAME,
+        name=DEFAULT_ENTRY_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_entry_deletion(
+            alias
+        )  # new
 
-    def confirm_entry_deleted(self,register_name=DEFAULT_REGISTER_NAME,name=DEFAULT_ENTRY_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.confirm_entry_deleted(alias)  # new
+    def confirm_entry_deleted(
+        self,
+        register_name=DEFAULT_REGISTER_NAME,
+        name=DEFAULT_ENTRY_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.confirm_entry_deleted(
+            alias
+        )  # new
 
-    def cancel_entry_deletion(self,register_name=DEFAULT_REGISTER_NAME,name=DEFAULT_ENTRY_NAME,):
-        alias = self._decode_alias(name)
-        self.driver.cancel_entry_deletion(alias)  # new
+    def cancel_entry_deletion(
+        self,
+        register_name=DEFAULT_REGISTER_NAME,
+        name=DEFAULT_ENTRY_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        self.driver.cancel_entry_deletion(
+            alias
+        )  # new
 
-    def confirm_entry_exists(self,register_name=DEFAULT_REGISTER_NAME,name=DEFAULT_ENTRY_NAME,):
-        alias = self._decode_alias(name)
-        register = self._decode_alias(register_name)
-        self.driver.confirm_entry_exists(register,alias,)  # new
+    def confirm_entry_exists(
+        self,
+        register_name=DEFAULT_REGISTER_NAME,
+        name=DEFAULT_ENTRY_NAME,
+    ):
+        alias = self._decode_alias(
+            name
+        )
+        register = self._decode_alias(
+            register_name
+        )
+        self.driver.confirm_entry_exists(
+            register,
+            alias,
+        )  # new
 
 
 #####thursday#######
-
-    
-
-    

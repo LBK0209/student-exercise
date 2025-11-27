@@ -89,11 +89,6 @@ class EntryForm(
         self,
         field,
     ):
-        
-
-
-
-        
         """
         Ensure that the entry name is unique for the given Register.
 
