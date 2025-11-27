@@ -5,9 +5,7 @@ from unittest import (
 from tests.acceptance_tests.driver import (
     Driver,
 )
-from tests.acceptance_tests.dsl import (
-    Dsl,
-)
+from tests.acceptance_tests.dsl import Dsl
 
 
 class FunctionalTests(TestCase):
@@ -26,9 +24,7 @@ class FunctionalTests(TestCase):
         )
         self.dsl = Dsl(Driver(base_url="https://localhost/"))
 
-    def setUp(
-        self,
-    ):
+    def setUp(self):
         self.dsl.setup()
 
     def tearDown(
@@ -61,9 +57,7 @@ class FunctionalTests(TestCase):
         self.dsl.ensure_existing_register()
         self.dsl.confirm_can_view_register()
 
-    def test_edit_register_name_required(
-        self,
-    ):
+    def test_edit_register_name_required(self):
         self.dsl.ensure_existing_register()
         self.dsl.update_existing_register(new_name="")
         self.dsl.confirm_name_required_validation_error()
@@ -159,9 +153,7 @@ class FunctionalTests(TestCase):
         self.dsl.ensure_existing_entry()
         self.dsl.confirm_can_view_entry()
 
-    def test_can_edit_entry_name_required(
-        self,
-    ):
+    def test_can_edit_entry_name_required(self):
         self.dsl.ensure_existing_register()
         self.dsl.ensure_existing_entry()
         self.dsl.update_existing_entry(new_name="")  # --new
@@ -184,10 +176,7 @@ class FunctionalTests(TestCase):
     ):
         self.dsl.ensure_existing_register()
         self.dsl.ensure_existing_entry(entry_name="Old")
-        self.dsl.update_existing_entry(
-            current_name="Old",
-            new_name="New",
-        )  # --new###################
+        self.dsl.update_existing_entry(current_name="Old", new_name="New")  # --new###################
         self.dsl.confirm_entry_updated(
             old_name="Old",
             new_name="New",
@@ -195,34 +184,28 @@ class FunctionalTests(TestCase):
 
     #######################################
 
-    def test_can_delete_entry(
-        self,
-    ):
+    def test_can_delete_entry(self):
         self.dsl.ensure_existing_register()
         self.dsl.ensure_existing_entry()
         self.dsl.delete_existing_entry()
-        self.dsl.confirm_deletion_requires_confirmation()
+        self.dsl.confirm_entry_deletion_requires_confirmation()
         self.dsl.confirm_entry_deletion()
         self.dsl.confirm_entry_deleted()
 
-    def test_can_cancel_delete_entry(
-        self,
-    ):
+    def test_can_cancel_delete_entry(self):
         self.dsl.ensure_existing_register()
         self.dsl.ensure_existing_entry()
         self.dsl.delete_existing_entry()
-        self.dsl.confirm_deletion_requires_confirmation()
+        self.dsl.confirm_entry_deletion_requires_confirmation()
         self.dsl.cancel_entry_deletion()  # new
         self.dsl.confirm_entry_exists()  # new
 
     #####thursday#######
 
-    def test_only_empty_register_can_be_deleted(
-        self,
-    ):
-        self.dsl.ensure_existing_register(name="Non-empty register")
-        self.dsl.ensure_existing_entry(register="Non-empty register")
-        self.dsl.delete_existing_register(name="Non-empty register")
+    def test_only_empty_register_can_be_deleted(self):
+        self.dsl.ensure_existing_register()
+        self.dsl.ensure_existing_entry()
+        self.dsl.delete_existing_register()
         self.dsl.confirm_deletion_requires_confirmation()
         self.dsl.confirm_register_deletion()
         self.dsl.confirm_can_view_register()

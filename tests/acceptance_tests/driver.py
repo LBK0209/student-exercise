@@ -1,17 +1,11 @@
 from selenium import (
     webdriver,
 )
-from selenium.common import (
-    NoSuchElementException,
-    WebDriverException,
-)
+from selenium.common import NoSuchElementException, WebDriverException
 from selenium.webdriver.chrome.options import (
     Options,
 )
-from selenium.webdriver.common.by import (
-    By,
-    ByType,
-)
+from selenium.webdriver.common.by import By, ByType
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import (
     WebDriverWait,
@@ -44,10 +38,7 @@ class Driver:
         )
         assert register_heading.text == "Registers"
 
-    def _view_register(
-        self,
-        name,
-    ):
+    def _view_register(self, name):
         self._find_and_click(
             By.LINK_TEXT,
             name,
@@ -59,19 +50,10 @@ class Driver:
         )
         assert page_heading.text == name
 
-    def _view_entry(
-        self,
-        entry_name,
-    ):
-        self._find_and_click(
-            By.LINK_TEXT,
-            entry_name,
-        )
+    def _view_entry(self, entry_name):
+        self._find_and_click(By.LINK_TEXT, entry_name)
 
-        page_heading = self.browser.find_element(
-            By.TAG_NAME,
-            "h1",
-        )
+        page_heading = self.browser.find_element(By.TAG_NAME, "h1")
         assert page_heading.text == entry_name
 
     def _find_and_click(
@@ -188,10 +170,7 @@ class Driver:
 
         self.confirm_register_exists(name)
 
-    def confirm_register_exists(
-        self,
-        name,
-    ):
+    def confirm_register_exists(self, name):
         self._navigate_to_registers()
 
         existing_register = self.browser.find_element(
@@ -274,20 +253,21 @@ class Driver:
             "Delete register",
         )
 
-    def confirm_deletion_requires_confirmation(
-        self,
-        name,
-    ):
+    def confirm_deletion_requires_confirmation(self, name):
         confirmation_prompt = self.browser.find_element(
             By.XPATH,
             f"//*[contains(text(),'Are you sure you want to delete the {name} register?')]",
         )
         assert confirmation_prompt is not None, "Confirmation prompt not found"
 
-    def cancel_register_deletion(
-        self,
-        name,
-    ):
+    def confirm_entry_deletion_requires_confirmation(self, name):
+        confirmation_prompt = self.browser.find_element(
+            By.XPATH,
+            f"//*[contains(text(),'Are you sure you want to delete the {name} entry?')]",
+        )
+        assert confirmation_prompt is not None, "Confirmation prompt not found"
+
+    def cancel_register_deletion(self, name):
         self._find_and_click(
             By.LINK_TEXT,
             "Cancel",
@@ -303,10 +283,7 @@ class Driver:
         )
         confirm_checkbox.click()
 
-        self._find_and_click(
-            By.NAME,
-            "submit",
-        )
+        self._find_and_click(By.NAME, "submit")
 
     def confirm_register_deleted(
         self,
@@ -359,11 +336,7 @@ class Driver:
             "submit",
         )
 
-    def confirm_entry_added(
-        self,
-        register,
-        entry_name,
-    ):
+    def confirm_entry_added(self, register, entry_name):
         added_message = self.browser.find_element(
             By.XPATH,
             "//*[contains(text(),'Successfully added entry to register')]",
@@ -398,23 +371,6 @@ class Driver:
         self._view_register(register)
         self._view_entry(entry_name)
 
-    # def the functions we made in DLS file #def nav to entry!!
-
-    def _navigate_to_entry(
-        self,
-        name,
-    ):
-        self._find_and_click(
-            By.LINK_TEXT,
-            name,
-        )
-
-        entry_heading = self.browser.find_element(
-            By.TAG_NAME,
-            "h1",
-        )
-        assert entry_heading.text == name
-
     def update_existing_entry(
         self,
         register,
@@ -444,12 +400,7 @@ class Driver:
             "submit",
         )
 
-    def confirm_entry_updated(
-        self,
-        register,
-        old_name,
-        new_name,
-    ):
+    def confirm_entry_updated(self, register, old_name, new_name):
         updated_message = self.browser.find_element(
             By.XPATH,
             "//*[contains(text(),'Successfully updated entry')]",
@@ -481,8 +432,8 @@ class Driver:
         name,
         register,
     ):
+        self._navigate_to_registers()
         self._view_register(register)
-        self._navigate_to_entry(name)
         self._view_entry(name)
 
         self._find_and_click(
@@ -490,10 +441,7 @@ class Driver:
             "Delete entry",
         )
 
-    def confirm_entry_deletion(
-        self,
-        alias,
-    ):
+    def confirm_entry_deletion(self, alias):
         confirm_checkbox = self.browser.find_element(
             By.NAME,
             "confirm",
@@ -515,10 +463,7 @@ class Driver:
         )
         assert deleted_message is not None, "Deleted message not found"
 
-    def cancel_entry_deletion(
-        self,
-        name,
-    ):
+    def cancel_entry_deletion(self, name):
         self._find_and_click(
             By.LINK_TEXT,
             "Cancel",
