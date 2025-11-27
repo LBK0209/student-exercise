@@ -119,12 +119,8 @@ def create_app(
 
     # --- REGISTER BLUEPRINTS ---
     # Blueprints group related routes and templates
-    from app.main import (
-        bp as main_bp,
-    )
-    from app.register import (
-        bp as register_bp,
-    )
+    from app.main import bp as main_bp
+    from app.register import bp as register_bp
 
     # Register the main blueprint for generic routes
     app.register_blueprint(main_bp)
@@ -136,6 +132,6 @@ def create_app(
 
 # Import models to ensure they are registered with SQLAlchemy
 # noqa disables warnings about import order or unused import
-from app import (
+from app import (  # noqa: E402,F401
     models,
-)  # noqa: E402,F401
+)

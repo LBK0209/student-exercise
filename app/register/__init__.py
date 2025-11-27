@@ -21,9 +21,7 @@ from flask import (
     Blueprint,
 )
 
-from app.entry import (
-    bp as entry_bp,
-)
+from app.entry import bp as entry_bp
 
 # Create a blueprint named "register".
 #
@@ -53,6 +51,6 @@ bp.register_blueprint(entry_bp)
 #
 # The "# noqa" comments disable certain formatting/linting warnings about
 # import order (E402) or unused imports (F401).
-from app.register import (
+from app.register import (  # noqa: E402,F401
     routes,
-)  # noqa: E402,F401
+)

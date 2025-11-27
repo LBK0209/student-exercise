@@ -55,6 +55,6 @@ bp: Blueprint = Blueprint(
 # access to the bp object.
 # The "# noqa" comments disable linting warnings about import order
 # (E402) or unused imports (F401).
-from app.entry import (
+from app.entry import (  # noqa: E402,F401
     routes,
-)  # noqa: E402,F401
+)

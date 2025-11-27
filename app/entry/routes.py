@@ -20,8 +20,8 @@ from flask import (
     flash,
     redirect,
     render_template,
-    url_for,
     request,
+    url_for,
 )
 from werkzeug import (
     Response,
@@ -34,8 +34,8 @@ from app.entry import (
     bp,
 )
 from app.entry.forms import (
-    EntryForm,
     EntryDeleteForm,
+    EntryForm,
 )
 from app.models import (
     Entry,

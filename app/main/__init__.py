@@ -7,6 +7,6 @@ bp: Blueprint = Blueprint(
     __name__,
 )
 
-from app.main import (
+from app.main import (  # noqa: E402,F401
     routes,
-)  # noqa: E402,F401
+)
