@@ -252,3 +252,13 @@ class FunctionalTests(
         self.dsl.confirm_deletion_requires_confirmation()
         self.dsl.cancel_entry_deletion()  # new
         self.dsl.confirm_entry_exists()  # new
+
+#####thursday#######
+
+    def test_only_empty_register_can_be_deleted(self,):
+            self.dsl.ensure_existing_register(name="Non-empty register")
+            self.dsl.ensure_existing_entry(register="Non-empty register")
+            self.dsl.delete_existing_register(name="Non-empty register")
+            self.dsl.confirm_deletion_requires_confirmation()
+            self.dsl.confirm_register_deletion()
+            self.dsl.confirm_can_view_register()
