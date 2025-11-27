@@ -34,9 +34,7 @@ from app.models import (
 )
 
 
-class EntryForm(
-    FlaskForm
-):
+class EntryForm(FlaskForm):
     """
     A form used to add or edit an Entry.
 
@@ -62,11 +60,7 @@ class EntryForm(
     name = StringField(
         "Name",
         widget=GovTextInput(),
-        validators=[
-            InputRequired(
-                message="Enter a name"
-            )
-        ],
+        validators=[InputRequired(message="Enter a name")],
     )
 
     # A standard GOV.UK-styled submit button.
@@ -80,9 +74,7 @@ class EntryForm(
         register_id,
         **kwargs,
     ):
-        super().__init__(
-            **kwargs
-        )
+        super().__init__(**kwargs)
         self.register_id = register_id
 
     def validate_name(
@@ -114,25 +106,17 @@ class EntryForm(
             name=field.data,
         ).first()
         if existing:
-            raise ValidationError(
-                "Name already in use"
-            )
+            raise ValidationError("Name already in use")
 
 
-class EntryDeleteForm(
-    FlaskForm
-):
+class EntryDeleteForm(FlaskForm):
 
     # A checkbox that the user must actively tick to continue.
     # Using InputRequired ensures the user can't accidentally skip it.
     confirm = BooleanField(
         "I'm sure",
         widget=GovCheckboxInput(),
-        validators=[
-            InputRequired(
-                message="Select if you want to delete this entry"
-            )
-        ],
+        validators=[InputRequired(message="Select if you want to delete this entry")],
     )
 
     # Submit button styled using GOV.UK design system components.

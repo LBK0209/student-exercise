@@ -14,12 +14,8 @@ from alembic import (
 # revision identifiers, used by Alembic.
 revision = "e2e091996f1f"
 down_revision = "79610b132520"
-branch_labels = (
-    None
-)
-depends_on = (
-    None
-)
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
@@ -28,18 +24,10 @@ def upgrade():
         "entry",
         schema=None,
     ) as batch_op:
-        batch_op.drop_index(
-            batch_op.f(
-                "ix_entry_name"
-            )
-        )
+        batch_op.drop_index(batch_op.f("ix_entry_name"))
         batch_op.create_index(
-            batch_op.f(
-                "ix_entry_name"
-            ),
-            [
-                "name"
-            ],
+            batch_op.f("ix_entry_name"),
+            ["name"],
             unique=False,
         )
 
@@ -52,18 +40,10 @@ def downgrade():
         "entry",
         schema=None,
     ) as batch_op:
-        batch_op.drop_index(
-            batch_op.f(
-                "ix_entry_name"
-            )
-        )
+        batch_op.drop_index(batch_op.f("ix_entry_name"))
         batch_op.create_index(
-            batch_op.f(
-                "ix_entry_name"
-            ),
-            [
-                "name"
-            ],
+            batch_op.f("ix_entry_name"),
+            ["name"],
             unique=True,
         )
 

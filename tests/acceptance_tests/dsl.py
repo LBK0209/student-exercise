@@ -21,49 +21,24 @@ class Dsl:
         self.aliases: Dict[
             str,
             str,
-        ] = (
-            {}
-        )
+        ] = {}
 
     def _encode_alias(
         self,
         name,
     ):
-        if (
-            name
-            == ""
-        ):
+        if name == "":
             return ""
-        if (
-            name
-            not in self.aliases
-        ):
-            self.aliases[
-                name
-            ] = (
-                name
-                + str(
-                    round(
-                        time.time()
-                        * 1000
-                    )
-                )
-            )
-        return self.aliases[
-            name
-        ]
+        if name not in self.aliases:
+            self.aliases[name] = name + str(round(time.time() * 1000))
+        return self.aliases[name]
 
     def _decode_alias(
         self,
         name,
     ):
-        if (
-            name
-            in self.aliases
-        ):
-            return self.aliases[
-                name
-            ]
+        if name in self.aliases:
+            return self.aliases[name]
         else:
             return ""
 
@@ -81,32 +56,20 @@ class Dsl:
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        self.create_new_register(
-            name
-        )
-        self.confirm_register_created(
-            name
-        )
+        self.create_new_register(name)
+        self.confirm_register_created(name)
 
     def create_new_register(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        self.driver.create_new_register(
-            self._encode_alias(
-                name
-            )
-        )
+        self.driver.create_new_register(self._encode_alias(name))
 
     def confirm_register_created(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        self.driver.confirm_register_created(
-            self._decode_alias(
-                name
-            )
-        )
+        self.driver.confirm_register_created(self._decode_alias(name))
 
     def confirm_name_required_validation_error(
         self,
@@ -122,23 +85,15 @@ class Dsl:
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        self.driver.confirm_can_view_register(
-            self._decode_alias(
-                name
-            )
-        )
+        self.driver.confirm_can_view_register(self._decode_alias(name))
 
     def update_existing_register(
         self,
         current_name=DEFAULT_REGISTER_NAME,
         new_name="",
     ):
-        current_name_alias = self._encode_alias(
-            current_name
-        )
-        new_name_alias = self._encode_alias(
-            new_name
-        )
+        current_name_alias = self._encode_alias(current_name)
+        new_name_alias = self._encode_alias(new_name)
         self.driver.update_existing_register(
             current_name_alias,
             new_name_alias,
@@ -149,12 +104,8 @@ class Dsl:
         old_name=DEFAULT_REGISTER_NAME,
         new_name="",
     ):
-        old_name_alias = self._decode_alias(
-            old_name
-        )
-        new_name_alias = self._decode_alias(
-            new_name
-        )
+        old_name_alias = self._decode_alias(old_name)
+        new_name_alias = self._decode_alias(new_name)
         self.driver.confirm_register_updated(
             old_name_alias,
             new_name_alias,
@@ -164,67 +115,43 @@ class Dsl:
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._encode_alias(
-            name
-        )
-        self.driver.delete_existing_register(
-            alias
-        )
+        alias = self._encode_alias(name)
+        self.driver.delete_existing_register(alias)
 
     def confirm_deletion_requires_confirmation(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_deletion_requires_confirmation(
-            alias
-        )
+        alias = self._decode_alias(name)
+        self.driver.confirm_deletion_requires_confirmation(alias)
 
     def cancel_register_deletion(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.cancel_register_deletion(
-            alias
-        )
+        alias = self._decode_alias(name)
+        self.driver.cancel_register_deletion(alias)
 
     def confirm_register_deletion(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_register_deletion(
-            alias
-        )
+        alias = self._decode_alias(name)
+        self.driver.confirm_register_deletion(alias)
 
     def confirm_register_deleted(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_register_deleted(
-            alias
-        )
+        alias = self._decode_alias(name)
+        self.driver.confirm_register_deleted(alias)
 
     def confirm_register_exists(
         self,
         name=DEFAULT_REGISTER_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_register_exists(
-            alias
-        )
+        alias = self._decode_alias(name)
+        self.driver.confirm_register_exists(alias)
 
     def ensure_existing_entry(
         self,
@@ -246,12 +173,8 @@ class Dsl:
         entry_name=DEFAULT_ENTRY_NAME,
     ):
         self.driver.add_entry_to_register(
-            register=self._encode_alias(
-                register
-            ),
-            entry_name=self._encode_alias(
-                entry_name
-            ),
+            register=self._encode_alias(register),
+            entry_name=self._encode_alias(entry_name),
         )
 
     def confirm_entry_added(
@@ -260,12 +183,8 @@ class Dsl:
         entry_name=DEFAULT_ENTRY_NAME,
     ):
         self.driver.confirm_entry_added(
-            register=self._decode_alias(
-                register
-            ),
-            entry_name=self._decode_alias(
-                entry_name
-            ),
+            register=self._decode_alias(register),
+            entry_name=self._decode_alias(entry_name),
         )
 
     def confirm_can_view_entry(
@@ -274,12 +193,8 @@ class Dsl:
         entry_name=DEFAULT_ENTRY_NAME,
     ):
         self.driver.confirm_can_view_entry(
-            register=self._encode_alias(
-                register
-            ),
-            entry_name=self._encode_alias(
-                entry_name
-            ),
+            register=self._encode_alias(register),
+            entry_name=self._encode_alias(entry_name),
         )
 
     def update_existing_entry(
@@ -288,15 +203,9 @@ class Dsl:
         current_name=DEFAULT_ENTRY_NAME,
         new_name="",
     ):
-        register_alias = self._encode_alias(
-            register
-        )
-        current_name_alias = self._encode_alias(
-            current_name
-        )
-        new_name_alias = self._encode_alias(
-            new_name
-        )
+        register_alias = self._encode_alias(register)
+        current_name_alias = self._encode_alias(current_name)
+        new_name_alias = self._encode_alias(new_name)
         self.driver.update_existing_entry(
             register=register_alias,
             current_name=current_name_alias,
@@ -309,15 +218,9 @@ class Dsl:
         old_name=DEFAULT_ENTRY_NAME,
         new_name="",
     ):
-        register_alias = self._decode_alias(
-            register
-        )
-        old_name_alias = self._decode_alias(
-            old_name
-        )
-        new_name_alias = self._decode_alias(
-            new_name
-        )
+        register_alias = self._decode_alias(register)
+        old_name_alias = self._decode_alias(old_name)
+        new_name_alias = self._decode_alias(new_name)
         self.driver.confirm_entry_updated(
             register_alias,
             old_name_alias,
@@ -331,12 +234,8 @@ class Dsl:
         register_name=DEFAULT_REGISTER_NAME,
         name=DEFAULT_ENTRY_NAME,
     ):
-        alias = self._encode_alias(
-            name
-        )
-        alias_register = self._encode_alias(
-            register_name
-        )
+        alias = self._encode_alias(name)
+        alias_register = self._encode_alias(register_name)
         self.driver.delete_existing_entry(
             alias,
             alias_register,
@@ -347,48 +246,32 @@ class Dsl:
         register_name=DEFAULT_REGISTER_NAME,
         name=DEFAULT_ENTRY_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_entry_deletion(
-            alias
-        )  # new
+        alias = self._decode_alias(name)
+        self.driver.confirm_entry_deletion(alias)  # new
 
     def confirm_entry_deleted(
         self,
         register_name=DEFAULT_REGISTER_NAME,
         name=DEFAULT_ENTRY_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.confirm_entry_deleted(
-            alias
-        )  # new
+        alias = self._decode_alias(name)
+        self.driver.confirm_entry_deleted(alias)  # new
 
     def cancel_entry_deletion(
         self,
         register_name=DEFAULT_REGISTER_NAME,
         name=DEFAULT_ENTRY_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        self.driver.cancel_entry_deletion(
-            alias
-        )  # new
+        alias = self._decode_alias(name)
+        self.driver.cancel_entry_deletion(alias)  # new
 
     def confirm_entry_exists(
         self,
         register_name=DEFAULT_REGISTER_NAME,
         name=DEFAULT_ENTRY_NAME,
     ):
-        alias = self._decode_alias(
-            name
-        )
-        register = self._decode_alias(
-            register_name
-        )
+        alias = self._decode_alias(name)
+        register = self._decode_alias(register_name)
         self.driver.confirm_entry_exists(
             register,
             alias,

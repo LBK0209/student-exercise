@@ -51,26 +51,17 @@ from app.models import (
 )
 def add(
     register_id: UUID,
-) -> (
-    str
-    | Response
-):
-    form = EntryForm(
-        register_id=register_id
-    )
+) -> str | Response:
+    form = EntryForm(register_id=register_id)
 
     # Flask-WTF handles form validation and CSRF protection for us.
     # We don't need to manually check request.form or HTML inputs.
-    if (
-        form.validate_on_submit()
-    ):
+    if form.validate_on_submit():
         entry = Entry(
             name=form.name.data,
             register_id=register_id,
         )
-        db.session.add(
-            entry
-        )
+        db.session.add(entry)
         db.session.commit()
         flash(
             "Successfully added entry to register",
@@ -95,9 +86,7 @@ def add(
 
 @bp.route(
     "/<uuid:entry_id>",
-    methods=[
-        "GET"
-    ],
+    methods=["GET"],
 )
 def view(
     register_id: UUID,
@@ -115,9 +104,7 @@ def view(
     """
     # Fetch the entry or return a 404 page if it does not exist
     entry = db.one_or_404(
-        db.select(
-            Entry
-        ).filter_by(
+        db.select(Entry).filter_by(
             register_id=register_id,
             id=entry_id,
         )
@@ -140,38 +127,22 @@ def view(
 def edit(
     register_id: UUID,
     entry_id: UUID,
-) -> (
-    str
-    | Response
-):
+) -> str | Response:
     # Load the register or show 404 if it doesn't exist
     entry = db.one_or_404(
-        db.select(
-            Entry
-        ).filter_by(
+        db.select(Entry).filter_by(
             register_id=register_id,
             id=entry_id,
         )
     )
-    form = EntryForm(
-        register_id=register_id
-    )
+    form = EntryForm(register_id=register_id)
 
-    if (
-        request.method
-        == "GET"
-    ):
+    if request.method == "GET":
         # Pre-fill the form with current data so user can edit it
-        form.name.data = (
-            entry.name
-        )
-    elif (
-        form.validate_on_submit()
-    ):
+        form.name.data = entry.name
+    elif form.validate_on_submit():
         # Copy validated form data into the Register object
-        entry.name = (
-            form.name.data
-        )
+        entry.name = form.name.data
 
         # Persist changes to the database
         db.session.commit()
@@ -206,10 +177,7 @@ def edit(
 def delete(
     register_id: UUID,
     entry_id: UUID,
-) -> (
-    str
-    | Response
-):
+) -> str | Response:
     """
     Delete an existing Register.
 
@@ -230,16 +198,10 @@ def delete(
         entry_id,
     )
 
-    form = (
-        EntryDeleteForm()
-    )
+    form = EntryDeleteForm()
 
-    if (
-        form.validate_on_submit()
-    ):
-        db.session.delete(
-            entry
-        )
+    if form.validate_on_submit():
+        db.session.delete(entry)
         db.session.commit()
 
         flash(

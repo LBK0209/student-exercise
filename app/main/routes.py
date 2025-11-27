@@ -26,32 +26,20 @@ from app.main.forms import (
 
 @bp.route(
     "/",
-    methods=[
-        "GET"
-    ],
+    methods=["GET"],
 )
-def index() -> (
-    str
-):
+def index() -> str:
     """Render the index page."""
-    return render_template(
-        "main/index.html"
-    )
+    return render_template("main/index.html")
 
 
 @bp.route(
     "/accessibility",
-    methods=[
-        "GET"
-    ],
+    methods=["GET"],
 )
-def accessibility() -> (
-    str
-):
+def accessibility() -> str:
     """Render the accessibility statement page."""
-    return render_template(
-        "main/accessibility.html"
-    )
+    return render_template("main/accessibility.html")
 
 
 @bp.route(
@@ -66,27 +54,15 @@ def cookies() -> Union[
     Response,
 ]:
     """Handle GET and POST requests for managing cookie preferences."""
-    form: CookiesForm = (
-        CookiesForm()
-    )
+    form: CookiesForm = CookiesForm()
     # Initialize cookie settings. Defaults to rejecting all cookies.
-    functional: (
-        str
-    ) = "no"
-    analytics: (
-        str
-    ) = "no"
+    functional: str = "no"
+    analytics: str = "no"
 
-    if (
-        form.validate_on_submit()
-    ):
+    if form.validate_on_submit():
         # Update cookie settings based on form submission
-        functional = (
-            form.functional.data
-        )
-        analytics = (
-            form.analytics.data
-        )
+        functional = form.functional.data
+        analytics = form.analytics.data
         # Create flash message confirmation before rendering template
         flash(
             "You've set your cookie preferences.",
@@ -117,10 +93,7 @@ def cookies() -> Union[
         )
 
         return response
-    elif (
-        request.method
-        == "GET"
-    ):
+    elif request.method == "GET":
         # Retrieve existing cookie settings if present
         functional = request.cookies.get(
             "functional",
@@ -143,13 +116,9 @@ def cookies() -> Union[
 
 @bp.route(
     "/health",
-    methods=[
-        "GET"
-    ],
+    methods=["GET"],
 )
-def health() -> (
-    Response
-):
+def health() -> Response:
     """Route for healthchecks"""
     return make_response(
         "OK",
@@ -157,39 +126,21 @@ def health() -> (
     )
 
 
-@bp.app_errorhandler(
-    HTTPException
-)
+@bp.app_errorhandler(HTTPException)
 def handle_http_exception(
     error: HTTPException,
-) -> (
-    Response
-):
+) -> Response:
     """Handle HTTP exceptions and render appropriate error template."""
     return make_response(
-        render_template(
-            f"main/{error.code}.html"
-        ),
+        render_template(f"main/{error.code}.html"),
         error.code,
     )
 
 
-@bp.app_errorhandler(
-    CSRFError
-)
+@bp.app_errorhandler(CSRFError)
 def handle_csrf_error(
     error: CSRFError,
-) -> (
-    Response
-):
+) -> Response:
     """Handle CSRF errors and display a flash message."""
-    flash(
-        "The form you were submitting has expired. Please try again."
-    )
-    return make_response(
-        redirect(
-            url_for(
-                "main.index"
-            )
-        )
-    )
+    flash("The form you were submitting has expired. Please try again.")
+    return make_response(redirect(url_for("main.index")))

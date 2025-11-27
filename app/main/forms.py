@@ -4,19 +4,13 @@ from wtforms.fields import RadioField, SubmitField  # type: ignore
 from wtforms.validators import InputRequired  # type: ignore
 
 
-class CookiesForm(
-    FlaskForm
-):
+class CookiesForm(FlaskForm):
     """Form for managing cookie preferences."""
 
     functional: RadioField = RadioField(
         "Do you want to accept functional cookies?",
         widget=GovRadioInput(),
-        validators=[
-            InputRequired(
-                message="Select yes if you want to accept functional cookies"
-            )
-        ],
+        validators=[InputRequired(message="Select yes if you want to accept functional cookies")],
         choices=[
             (
                 "no",
@@ -32,11 +26,7 @@ class CookiesForm(
     analytics: RadioField = RadioField(
         "Do you want to accept analytics cookies?",
         widget=GovRadioInput(),
-        validators=[
-            InputRequired(
-                message="Select yes if you want to accept analytics cookies"
-            )
-        ],
+        validators=[InputRequired(message="Select yes if you want to accept analytics cookies")],
         choices=[
             (
                 "no",

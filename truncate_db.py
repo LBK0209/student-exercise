@@ -18,36 +18,21 @@ def truncate(
             host=host,
             port=port,
         ) as conn:
-            with (
-                conn.cursor() as cur
-            ):
-                cur.execute(
-                    "TRUNCATE register CASCADE"
-                )
-                rows_deleted = (
-                    cur.rowcount
-                )
+            with conn.cursor() as cur:
+                cur.execute("TRUNCATE register CASCADE")
+                rows_deleted = cur.rowcount
             # commit the changes to the database
             conn.commit()
-            print(
-                "Complete"
-            )
+            print("Complete")
     except (
         Exception,
         psycopg2.DatabaseError,
     ) as error:
-        print(
-            error
-        )
+        print(error)
 
 
-if (
-    __name__
-    == "__main__"
-):
-    parser = argparse.ArgumentParser(
-        description="Truncates the local database"
-    )
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Truncates the local database")
     parser.add_argument(
         "--host",
         type=str,
@@ -75,9 +60,7 @@ if (
         type=str,
         required=True,
     )
-    args = (
-        parser.parse_args()
-    )
+    args = parser.parse_args()
     truncate(
         database=args.database_name,
         user=args.user,

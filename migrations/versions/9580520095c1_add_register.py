@@ -13,15 +13,9 @@ from alembic import (
 
 # revision identifiers, used by Alembic.
 revision = "9580520095c1"
-down_revision = (
-    None
-)
-branch_labels = (
-    None
-)
-depends_on = (
-    None
-)
+down_revision = None
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
@@ -38,21 +32,15 @@ def upgrade():
             sa.String(),
             nullable=False,
         ),
-        sa.PrimaryKeyConstraint(
-            "id"
-        ),
+        sa.PrimaryKeyConstraint("id"),
     )
     with op.batch_alter_table(
         "register",
         schema=None,
     ) as batch_op:
         batch_op.create_index(
-            batch_op.f(
-                "ix_register_name"
-            ),
-            [
-                "name"
-            ],
+            batch_op.f("ix_register_name"),
+            ["name"],
             unique=True,
         )
 
@@ -65,13 +53,7 @@ def downgrade():
         "register",
         schema=None,
     ) as batch_op:
-        batch_op.drop_index(
-            batch_op.f(
-                "ix_register_name"
-            )
-        )
+        batch_op.drop_index(batch_op.f("ix_register_name"))
 
-    op.drop_table(
-        "register"
-    )
+    op.drop_table("register")
     # ### end Alembic commands ###

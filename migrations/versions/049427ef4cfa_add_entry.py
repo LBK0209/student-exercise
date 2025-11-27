@@ -14,12 +14,8 @@ from alembic import (
 # revision identifiers, used by Alembic.
 revision = "049427ef4cfa"
 down_revision = "9580520095c1"
-branch_labels = (
-    None
-)
-depends_on = (
-    None
-)
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
@@ -42,38 +38,24 @@ def upgrade():
             nullable=False,
         ),
         sa.ForeignKeyConstraint(
-            [
-                "register_id"
-            ],
-            [
-                "register.id"
-            ],
+            ["register_id"],
+            ["register.id"],
             ondelete="RESTRICT",
         ),
-        sa.PrimaryKeyConstraint(
-            "id"
-        ),
+        sa.PrimaryKeyConstraint("id"),
     )
     with op.batch_alter_table(
         "entry",
         schema=None,
     ) as batch_op:
         batch_op.create_index(
-            batch_op.f(
-                "ix_entry_name"
-            ),
-            [
-                "name"
-            ],
+            batch_op.f("ix_entry_name"),
+            ["name"],
             unique=True,
         )
         batch_op.create_index(
-            batch_op.f(
-                "ix_entry_register_id"
-            ),
-            [
-                "register_id"
-            ],
+            batch_op.f("ix_entry_register_id"),
+            ["register_id"],
             unique=False,
         )
 
@@ -86,18 +68,8 @@ def downgrade():
         "entry",
         schema=None,
     ) as batch_op:
-        batch_op.drop_index(
-            batch_op.f(
-                "ix_entry_register_id"
-            )
-        )
-        batch_op.drop_index(
-            batch_op.f(
-                "ix_entry_name"
-            )
-        )
+        batch_op.drop_index(batch_op.f("ix_entry_register_id"))
+        batch_op.drop_index(batch_op.f("ix_entry_name"))
 
-    op.drop_table(
-        "entry"
-    )
+    op.drop_table("entry")
     # ### end Alembic commands ###

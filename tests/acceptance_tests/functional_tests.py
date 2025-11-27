@@ -10,9 +10,7 @@ from tests.acceptance_tests.dsl import (
 )
 
 
-class FunctionalTests(
-    TestCase
-):
+class FunctionalTests(TestCase):
 
     def __init__(
         self,
@@ -26,11 +24,7 @@ class FunctionalTests(
             *args,
             **kwargs,
         )
-        self.dsl = Dsl(
-            Driver(
-                base_url="https://localhost/"
-            )
-        )
+        self.dsl = Dsl(Driver(base_url="https://localhost/"))
 
     def setUp(
         self,
@@ -45,20 +39,14 @@ class FunctionalTests(
     def test_create_register_name_required(
         self,
     ):
-        self.dsl.create_new_register(
-            name=""
-        )
+        self.dsl.create_new_register(name="")
         self.dsl.confirm_name_required_validation_error()
 
     def test_create_register_name_must_be_unique(
         self,
     ):
-        self.dsl.ensure_existing_register(
-            name="Existing register"
-        )
-        self.dsl.create_new_register(
-            name="Existing register"
-        )
+        self.dsl.ensure_existing_register(name="Existing register")
+        self.dsl.create_new_register(name="Existing register")
         self.dsl.confirm_name_already_exists_validation_error()
 
     def test_can_create_new_register(
@@ -77,20 +65,14 @@ class FunctionalTests(
         self,
     ):
         self.dsl.ensure_existing_register()
-        self.dsl.update_existing_register(
-            new_name=""
-        )
+        self.dsl.update_existing_register(new_name="")
         self.dsl.confirm_name_required_validation_error()
 
     def test_edit_register_name_must_be_unique(
         self,
     ):
-        self.dsl.ensure_existing_register(
-            name="Existing register"
-        )
-        self.dsl.create_new_register(
-            name="Another register"
-        )
+        self.dsl.ensure_existing_register(name="Existing register")
+        self.dsl.create_new_register(name="Another register")
         self.dsl.update_existing_register(
             current_name="Another register",
             new_name="Existing register",
@@ -100,9 +82,7 @@ class FunctionalTests(
     def test_can_edit_register(
         self,
     ):
-        self.dsl.ensure_existing_register(
-            name="Old"
-        )
+        self.dsl.ensure_existing_register(name="Old")
         self.dsl.update_existing_register(
             current_name="Old",
             new_name="New",
@@ -136,21 +116,15 @@ class FunctionalTests(
         self,
     ):
         self.dsl.ensure_existing_register()
-        self.dsl.add_entry_to_register(
-            entry_name=""
-        )
+        self.dsl.add_entry_to_register(entry_name="")
         self.dsl.confirm_name_required_validation_error()
 
     def test_add_entry_name_must_be_unique(
         self,
     ):
         self.dsl.ensure_existing_register()
-        self.dsl.ensure_existing_entry(
-            entry_name="Existing entry"
-        )
-        self.dsl.add_entry_to_register(
-            entry_name="Existing entry"
-        )
+        self.dsl.ensure_existing_entry(entry_name="Existing entry")
+        self.dsl.add_entry_to_register(entry_name="Existing entry")
         self.dsl.confirm_name_already_exists_validation_error()
 
     def test_can_add_entry(
@@ -163,12 +137,8 @@ class FunctionalTests(
     def test_entry_with_same_name_allowed_in_different_registers(
         self,
     ):
-        self.dsl.ensure_existing_register(
-            "Register A"
-        )
-        self.dsl.ensure_existing_register(
-            "Register B"
-        )
+        self.dsl.ensure_existing_register("Register A")
+        self.dsl.ensure_existing_register("Register B")
         self.dsl.ensure_existing_entry(
             register="Register A",
             entry_name="Entry 1",
@@ -194,21 +164,15 @@ class FunctionalTests(
     ):
         self.dsl.ensure_existing_register()
         self.dsl.ensure_existing_entry()
-        self.dsl.update_existing_entry(
-            new_name=""
-        )  # --new
+        self.dsl.update_existing_entry(new_name="")  # --new
         self.dsl.confirm_name_required_validation_error()
 
     def test_edit_entry_name_must_be_unique(
         self,
     ):
         self.dsl.ensure_existing_register()
-        self.dsl.ensure_existing_entry(
-            entry_name="Existing entry"
-        )
-        self.dsl.add_entry_to_register(
-            entry_name="Another entry"
-        )
+        self.dsl.ensure_existing_entry(entry_name="Existing entry")
+        self.dsl.add_entry_to_register(entry_name="Another entry")
         self.dsl.update_existing_entry(
             current_name="Another entry",
             new_name="Existing entry",
@@ -219,9 +183,7 @@ class FunctionalTests(
         self,
     ):
         self.dsl.ensure_existing_register()
-        self.dsl.ensure_existing_entry(
-            entry_name="Old"
-        )
+        self.dsl.ensure_existing_entry(entry_name="Old")
         self.dsl.update_existing_entry(
             current_name="Old",
             new_name="New",
@@ -258,15 +220,9 @@ class FunctionalTests(
     def test_only_empty_register_can_be_deleted(
         self,
     ):
-        self.dsl.ensure_existing_register(
-            name="Non-empty register"
-        )
-        self.dsl.ensure_existing_entry(
-            register="Non-empty register"
-        )
-        self.dsl.delete_existing_register(
-            name="Non-empty register"
-        )
+        self.dsl.ensure_existing_register(name="Non-empty register")
+        self.dsl.ensure_existing_entry(register="Non-empty register")
+        self.dsl.delete_existing_register(name="Non-empty register")
         self.dsl.confirm_deletion_requires_confirmation()
         self.dsl.confirm_register_deletion()
         self.dsl.confirm_can_view_register()

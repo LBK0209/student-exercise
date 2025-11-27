@@ -30,15 +30,9 @@ def app() -> Generator[
     Returns:
         Flask: The Flask application instance.
     """
-    app: Flask = create_app(
-        TestConfig
-    )
-    app.config[
-        "WTF_CSRF_ENABLED"
-    ] = False  # Disable CSRF for testing
-    with (
-        app.test_client() as client
-    ):
+    app: Flask = create_app(TestConfig)
+    app.config["WTF_CSRF_ENABLED"] = False  # Disable CSRF for testing
+    with app.test_client() as client:
         yield client
 
 
@@ -51,17 +45,9 @@ def test_index(
     Args:
         client (FlaskClient): The test client for the Flask application.
     """
-    response = app.get(
-        "/"
-    )
-    assert (
-        response.status_code
-        == 200
-    )
-    assert (
-        b"<title>"
-        in response.data
-    )
+    response = app.get("/")
+    assert response.status_code == 200
+    assert b"<title>" in response.data
 
 
 def test_accessibility(
@@ -73,30 +59,17 @@ def test_accessibility(
     Args:
         client (FlaskClient): The test client for the Flask application.
     """
-    response = app.get(
-        "/accessibility"
-    )
-    assert (
-        response.status_code
-        == 200
-    )
-    assert (
-        b"<title>"
-        in response.data
-    )
+    response = app.get("/accessibility")
+    assert response.status_code == 200
+    assert b"<title>" in response.data
 
 
 def test_cookies_get(
     app: FlaskClient,
 ) -> None:
     """Test the cookies route with a GET request."""
-    response = app.get(
-        "/cookies"
-    )
-    assert (
-        response.status_code
-        == 200
-    )
+    response = app.get("/cookies")
+    assert response.status_code == 200
 
     # Check default cookie values
     assert (
@@ -129,100 +102,43 @@ def test_cookies_post(
         data=data,
         follow_redirects=True,
     )
-    assert (
-        response.status_code
-        == 200
-    )
+    assert response.status_code == 200
 
     # Verify flash message
-    assert (
-        b"You've set your cookie preferences."
-        in response.data
-    )
+    assert b"You've set your cookie preferences." in response.data
 
     # Check individual cookies were set
-    cookies = response.headers.getlist(
-        "Set-Cookie"
-    )
-    functional_cookie = [
-        c
-        for c in cookies
-        if c.startswith(
-            "functional="
-        )
-    ][
-        0
-    ]
-    analytics_cookie = [
-        c
-        for c in cookies
-        if c.startswith(
-            "analytics="
-        )
-    ][
-        0
-    ]
+    cookies = response.headers.getlist("Set-Cookie")
+    functional_cookie = [c for c in cookies if c.startswith("functional=")][0]
+    analytics_cookie = [c for c in cookies if c.startswith("analytics=")][0]
 
     # Verify cookie values
-    assert (
-        "functional=yes"
-        in functional_cookie
-    )
-    assert (
-        "analytics=yes"
-        in analytics_cookie
-    )
+    assert "functional=yes" in functional_cookie
+    assert "analytics=yes" in analytics_cookie
 
     # Verify cookie attributes
     for cookie in [
         functional_cookie,
         analytics_cookie,
     ]:
-        assert (
-            "Max-Age=31557600"
-            in cookie
-        )
-        assert (
-            "Secure"
-            in cookie
-        )
-        assert (
-            "SameSite=Lax"
-            in cookie
-        )
+        assert "Max-Age=31557600" in cookie
+        assert "Secure" in cookie
+        assert "SameSite=Lax" in cookie
 
 
 def test_http_errors(
     app: FlaskClient,
 ) -> None:
     """Test handling of HTTP errors."""
-    response = app.get(
-        "/not-found"
-    )
-    assert (
-        response.status_code
-        == 404
-    )
-    assert (
-        b"Page not found"
-        in response.data
-    )
+    response = app.get("/not-found")
+    assert response.status_code == 404
+    assert b"Page not found" in response.data
 
-    for (
-        i
-    ) in range(
+    for i in range(
         1,
         52,
     ):
-        response = app.get(
-            "/"
-        )
+        response = app.get("/")
 
-    assert (
-        response.status_code
-        == 429
-    )
-    assert (
-        b"There have been too many attempts to access this page."
-        in response.data
-    )
+    assert response.status_code == 429
+    assert b"There have been too many attempts to access this page." in response.data

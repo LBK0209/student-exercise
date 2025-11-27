@@ -53,32 +53,20 @@ from config import (
 #
 # These are initialized once here so they can be imported elsewhere in the app.
 # They will be "attached" to the app later using `init_app`.
-csrf: CSRFProtect = (
-    CSRFProtect()
-)
-db: SQLAlchemy = (
-    SQLAlchemy()
-)
-limiter: (
-    Limiter
-) = Limiter(
+csrf: CSRFProtect = CSRFProtect()
+db: SQLAlchemy = SQLAlchemy()
+limiter: Limiter = Limiter(
     get_remote_address,
     default_limits=[
         "50 per second",
         "500 per minute",
     ],  # Rate limits for requests
 )
-migrate: (
-    Migrate
-) = (
-    Migrate()
-)
+migrate: Migrate = Migrate()
 
 
 def create_app(
-    config_class: Type[
-        Config
-    ] = Config,
+    config_class: Type[Config] = Config,
 ) -> Flask:
     """
     Application factory to create and configure the Flask app.
@@ -91,38 +79,24 @@ def create_app(
     """
     # Create the Flask application instance
     app: Flask = Flask(__name__)  # type: ignore[assignment]
-    app.config.from_object(
-        config_class
-    )
+    app.config.from_object(config_class)
 
     # --- JINJA2 TEMPLATE CONFIG ---
     # Add a global variable to the template environment
-    app.jinja_env.globals[
-        "govukRebrand"
-    ] = True
+    app.jinja_env.globals["govukRebrand"] = True
     # Strip and trim blocks to remove extra whitespace in rendered templates
-    app.jinja_env.lstrip_blocks = (
-        True
-    )
-    app.jinja_env.trim_blocks = (
-        True
-    )
+    app.jinja_env.lstrip_blocks = True
+    app.jinja_env.trim_blocks = True
 
     # Configure template loaders to allow multiple template sources
     app.jinja_loader = ChoiceLoader(
         [
-            PackageLoader(
-                "app"
-            ),  # Load templates from the 'app' package
+            PackageLoader("app"),  # Load templates from the 'app' package
             PrefixLoader(
                 {
                     # Load templates from GOV.UK frontend packages
-                    "govuk_frontend_jinja": PackageLoader(
-                        "govuk_frontend_jinja"
-                    ),
-                    "govuk_frontend_wtf": PackageLoader(
-                        "govuk_frontend_wtf"
-                    ),
+                    "govuk_frontend_jinja": PackageLoader("govuk_frontend_jinja"),
+                    "govuk_frontend_wtf": PackageLoader("govuk_frontend_wtf"),
                 }
             ),
         ]
@@ -134,22 +108,14 @@ def create_app(
 
     # --- INITIALIZE EXTENSIONS ---
     # Attach extensions to this Flask app
-    csrf.init_app(
-        app
-    )  # CSRF protection for forms
-    db.init_app(
-        app
-    )  # SQLAlchemy database connection
-    limiter.init_app(
-        app
-    )  # Rate limiting for requests
+    csrf.init_app(app)  # CSRF protection for forms
+    db.init_app(app)  # SQLAlchemy database connection
+    limiter.init_app(app)  # Rate limiting for requests
     migrate.init_app(
         app,
         db,
     )  # Database migrations
-    WTFormsHelpers(
-        app
-    )  # Add GOV.UK WTForms helpers for forms
+    WTFormsHelpers(app)  # Add GOV.UK WTForms helpers for forms
 
     # --- REGISTER BLUEPRINTS ---
     # Blueprints group related routes and templates
@@ -161,17 +127,11 @@ def create_app(
     )
 
     # Register the main blueprint for generic routes
-    app.register_blueprint(
-        main_bp
-    )
+    app.register_blueprint(main_bp)
     # Register the Register blueprint (including nested Entry blueprint)
-    app.register_blueprint(
-        register_bp
-    )
+    app.register_blueprint(register_bp)
 
-    return (
-        app
-    )
+    return app
 
 
 # Import models to ensure they are registered with SQLAlchemy

@@ -44,9 +44,7 @@ bp: Blueprint = Blueprint(
 )
 
 # Nest the Entry blueprint under the Register blueprint
-bp.register_blueprint(
-    entry_bp
-)
+bp.register_blueprint(entry_bp)
 
 # Import routes AFTER the blueprint is created.
 #

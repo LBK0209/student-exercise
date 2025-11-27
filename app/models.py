@@ -47,14 +47,10 @@ if TYPE_CHECKING:
     )
 else:
     # Use db.Model as the base class for our models
-    Model = (
-        db.Model
-    )
+    Model = db.Model
 
 
-class Register(
-    Model
-):
+class Register(Model):
     """
     Represents a Register record in the database.
 
@@ -81,39 +77,27 @@ class Register(
     """
 
     # Primary key column using UUID
-    id: Mapped[
-        uuid.UUID
-    ] = mapped_column(
-        UUID(
-            as_uuid=True
-        ),  # Store as UUID in PostgreSQL
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),  # Store as UUID in PostgreSQL
         primary_key=True,  # Primary key
         default=uuid.uuid4,  # Auto-generate a UUID
     )
 
     # Name column for the register
-    name: Mapped[
-        str
-    ] = mapped_column(
+    name: Mapped[str] = mapped_column(
         nullable=False,  # Cannot be empty
         unique=True,  # Each register name must be unique
         index=True,  # Database index for faster search
     )
 
-    entries: Mapped[
-        List[
-            "Entry"
-        ]
-    ] = relationship(
+    entries: Mapped[List["Entry"]] = relationship(
         "Entry",
         back_populates="register",
         order_by="Entry.name",
     )
 
 
-class Entry(
-    Model
-):
+class Entry(Model):
     """
     Represents an Entry record in the database.
 
@@ -127,29 +111,21 @@ class Entry(
     """
 
     # Primary key column using UUID
-    id: Mapped[
-        uuid.UUID
-    ] = mapped_column(
-        UUID(
-            as_uuid=True
-        ),  # Store as UUID in PostgreSQL
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),  # Store as UUID in PostgreSQL
         primary_key=True,  # Primary key
         default=uuid.uuid4,  # Auto-generate a UUID
     )
 
     # Name column for the entry
-    name: Mapped[
-        str
-    ] = mapped_column(
+    name: Mapped[str] = mapped_column(
         nullable=False,  # Cannot be empty
         unique=False,  # Entry names are not globally unique, but should be unique on a given register
         index=True,  # Database index for faster search
     )
 
     # Foreign keys
-    register_id: Mapped[
-        uuid.UUID
-    ] = mapped_column(
+    register_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey(
             "register.id",
             ondelete="RESTRICT",
@@ -159,9 +135,7 @@ class Entry(
     )
 
     # Relationships
-    register: Mapped[
-        "Register"
-    ] = relationship(
+    register: Mapped["Register"] = relationship(
         "Register",
         back_populates="entries",
     )
